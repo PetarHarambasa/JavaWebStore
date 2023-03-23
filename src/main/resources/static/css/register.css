@@ -1,0 +1,9 @@
+#messageSuccessful{
+    color: lightgreen;
+    text-align: center;
+}
+#messageFailed{
+    color: red;
+    text-align: center;
+}
+
