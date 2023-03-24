@@ -1,6 +1,14 @@
 #body{
-    background-image: url('https://images3.alphacoders.com/716/thumb-1920-716813.png');
+    background-image: url("../images/gokuBackground.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
+}
+#messageSuccessful{
+    color: lightgreen;
+    text-align: center;
+}
+#messageFailed{
+    color: lightcoral;
+    text-align: center;
 }

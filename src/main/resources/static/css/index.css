@@ -1,6 +1,5 @@
-#noteBook{
-    margin: auto;
-    width: 50%;
-    border: 3px solid green;
-    padding: 10px;
+#carouselExampleAutoplaying {
+    width: 450px;
+    height: 450px;
+    margin: 5vw 10vw 10vw 40vw;
 }
