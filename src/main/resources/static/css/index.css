@@ -1,5 +1,24 @@
-#carouselExampleAutoplaying {
-    width: 450px;
-    height: 450px;
-    margin: 5vw 10vw 10vw 40vw;
+#merchContainer{
+   margin-top: 5vw;
+   margin-bottom: 10vw;
+   padding-bottom: 10vw;
 }
+
+body{
+   background-image: url("../images/voidDb.jpg");
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   background-size: cover;
+}
+
+main{
+   margin-top: 3vw;
+   color: lightblue;
+}
+
+#ad{
+   margin-top: 3vw;
+   color: lightblue;
+}
+
+
