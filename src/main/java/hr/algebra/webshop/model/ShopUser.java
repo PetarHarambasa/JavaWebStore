@@ -15,6 +15,8 @@ public class ShopUser {
     private String email;
     @Column(nullable = false)
     private String password;
+    @Column(columnDefinition = "false")
+    private boolean authenticated;
     @Column(nullable = false)
     @JoinColumn(referencedColumnName = "id_user_role")
     private Long userRoleId;

@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import static hr.algebra.webshop.controller.AuthenticationController.authenticated;
 
 @Controller
-public class DragonBallMerchController {
-    @GetMapping("/dragonBallStore")
-    public String getItems(Model model){
+public class HomeController {
+    @GetMapping("/")
+    public String home(Model model){
         model.addAttribute("CheckAuth", authenticated);
-        return "dragonBallItems";
+        return "index";
     }
 }

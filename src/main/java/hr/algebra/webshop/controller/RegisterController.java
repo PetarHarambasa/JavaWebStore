@@ -13,14 +13,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
+import static hr.algebra.webshop.controller.AuthenticationController.authenticated;
+
 @Controller
 public class RegisterController {
     @Autowired
     private UserService userService;
-    private List<ShopUser> shopUserList;
 
     @GetMapping("/register")
     public String registerPage(Model model) {
+        model.addAttribute("CheckAuth", authenticated);
+        if (authenticated){
+            return "redirect:/dragonBallStore";
+        }
         model.addAttribute("newUser", new ShopUser());
         return "register";
     }
@@ -38,7 +43,7 @@ public class RegisterController {
         String encodedPassword = passwordEncoder.encode(shopUser.getPassword());
         shopUser.setPassword(encodedPassword);
 
-        shopUserList = userService.searchUsers(shopUser.getEmail().trim());
+        List<ShopUser> shopUserList = userService.searchUsers(shopUser.getEmail().trim());
         if (shopUserList.isEmpty()) {
             userSaving(shopUser, model);
         } else {
@@ -51,6 +56,7 @@ public class RegisterController {
                 }
             }
         }
+        model.addAttribute("CheckAuth", authenticated);
         return "register";
     }
 
