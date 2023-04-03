@@ -5,8 +5,8 @@ spring:
   main:
     banner-mode: OFF
   datasource:
-    database: webShopDB
-    db-schema: webShopSchema
+    database: web_shop_db
+    db-schema: web_shop_schema
     url: "jdbc:postgresql://localhost:5432/${spring.datasource.database}"
     username: admin
     password: admin
