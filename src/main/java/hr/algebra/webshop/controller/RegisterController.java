@@ -17,8 +17,11 @@ import static hr.algebra.webshop.controller.AuthenticationController.authenticat
 
 @Controller
 public class RegisterController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public RegisterController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/register")
     public String registerPage(Model model) {

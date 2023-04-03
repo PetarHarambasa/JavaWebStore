@@ -11,7 +11,18 @@
 <body>
 <div id="navbar"></div>
 
-
+<div class="h-100 d-flex align-items-center justify-content-center">
+    <div th:each="merch : ${MerchList}" class="m-5">
+        <div class="card" style="width: 18rem;">
+            <img th:src="${merch.frontImageBase64}" class="card-img-top">
+            <div class="card-body">
+                <p class="card-text" th:text="${merch.description}"></p>
+                <p class="card-text" th:text="${merch.rating}"></p>
+                <p class="card-text" th:text="'$' + ${merch.price}"></p>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="footer"></div>
 
