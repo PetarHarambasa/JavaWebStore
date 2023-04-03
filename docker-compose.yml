@@ -1,0 +1,13 @@
+# Use root/root as user/password credentials
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres:12.4
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: webShopDB
+
+    ports:
+      - "5432:5432"
