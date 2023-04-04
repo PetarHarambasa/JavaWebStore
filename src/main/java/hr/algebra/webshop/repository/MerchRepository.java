@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface MerchRepository extends JpaRepository<Merch, Long> {
-
+    List<Merch> findMerchesByCategoryId(Long id);
 }

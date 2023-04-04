@@ -14,4 +14,7 @@ public class Category {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "front_image_base64", nullable = false)
+    private String frontImageBase64;
 }

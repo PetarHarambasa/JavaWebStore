@@ -20,4 +20,15 @@ public class MerchService{
         return merchRepository.findAll();
     }
 
+    public Merch getSingleMerch(Long id){
+        if (merchRepository.findById(id).isPresent()){
+            return merchRepository.findById(id).get();
+        }else {
+            return null;
+        }
+    }
+    public List<Merch> getMerchesByCategoryId(Long id){
+        return merchRepository.findMerchesByCategoryId(id);
+    }
+
 }
