@@ -65,7 +65,6 @@ public class RegisterController {
 
     @SneakyThrows
     private void userSaving(ShopUser shopUser, Model model) {
-        shopUser.setAuthenticated(false);
         userService.saveUser(shopUser);
         model.addAttribute("Message", "Register successful!");
         model.addAttribute("ErrorMessage", "");

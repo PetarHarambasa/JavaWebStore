@@ -9,6 +9,7 @@
           crossorigin="anonymous">
     <link th:href="@{css/footer.css}" rel="stylesheet" type="text/css">
     <link th:href="@{css/products.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/starRatting.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div id="navbar"></div>
@@ -21,7 +22,7 @@
             </a>
             <div class="card-body">
                 <p class="card-text" th:text="${merch.description}"></p>
-                <p class="card-text" th:text="${merch.rating}"></p>
+                <div class="card-text" id="star-rating" th:data-rating="${merch.getRating()}"></div>
                 <p class="card-text" th:text="'$' + ${merch.price}"></p>
             </div>
         </div>
@@ -42,5 +43,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script th:src="${CheckAuth.equals(false)} ? 'js/navbar.js' : 'js/navbarLoggedIn.js'"></script>
 <script th:src="@{js/footer.js}"></script>
+<script th:src="@{js/starRatting.js}"></script>
 </body>
 </html>

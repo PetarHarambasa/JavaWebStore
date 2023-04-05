@@ -30,7 +30,7 @@ public class CategoryController {
     public String getSingleProduct(@PathVariable Long id, Model model) {
         model.addAttribute("CheckAuth", authenticated);
         if (merchService.getMerchesByCategoryId(id).isEmpty()) {
-            model.addAttribute("MerchByCategoryList", "Category with id " + id + " doesn't exist or doesn't have any products");
+            model.addAttribute("MerchByCategory", "Category with id " + id + " doesn't exist or doesn't have any products");
             return "productsByCategoryNotFound";
         }
         model.addAttribute("MerchByCategoryList", merchService.getMerchesByCategoryId(id));

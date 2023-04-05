@@ -1,0 +1,28 @@
+#star-rating {
+    display: inline-block;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: 3px;
+    color: #ccc;
+    text-shadow: 1px 1px #fff;
+}
+#star-rating:before {
+    letter-spacing: 0;
+    background: linear-gradient(90deg, #fc0 0%, #fc0 calc(100% / 5 * 4), #ccc calc(100% / 5 * 4), #ccc);
+    -webkit-background-clip: text;
+}
+#star-rating[data-rating="1"]:before {
+    content: "⭐✰✰✰✰";
+}
+#star-rating[data-rating="2"]:before {
+    content: "⭐⭐✰✰✰";
+}
+#star-rating[data-rating="3"]:before {
+    content: "⭐⭐⭐✰✰";
+}
+#star-rating[data-rating="4"]:before {
+    content: "⭐⭐⭐⭐✰";
+}
+#star-rating[data-rating="5"]:before {
+    content: "⭐⭐⭐⭐⭐";
+}

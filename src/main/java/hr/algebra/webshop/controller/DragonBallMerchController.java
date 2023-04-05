@@ -1,5 +1,6 @@
 package hr.algebra.webshop.controller;
 
+import hr.algebra.webshop.model.Merch;
 import hr.algebra.webshop.service.MerchService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,11 +28,13 @@ public class DragonBallMerchController {
     @GetMapping("/dragonBallStore/product/{id}")
     public String getSingleProduct(@PathVariable Long id, Model model) {
         model.addAttribute("CheckAuth", authenticated);
-        if (merchService.getSingleMerch(id) == null) {
+        Merch merch = merchService.getSingleMerch(id);
+        if (merch == null) {
             model.addAttribute("Product", "Product with id " + id + " not found!");
             return "productNotFound";
         }
-        model.addAttribute("Product", merchService.getSingleMerch(id));
+        model.addAttribute("Product", merch);
+        model.addAttribute("ProductStarts", merch.getRating());
         return "product";
     }
 }

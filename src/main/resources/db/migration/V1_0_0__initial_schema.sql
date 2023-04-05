@@ -10,7 +10,6 @@ CREATE TABLE if not exists shop_user (
     username varchar(255) not null ,
     email varchar(255) not null ,
     password varchar(255) not null ,
-    authenticated boolean ,
     user_role_id int not null REFERENCES user_role(id_user_role)
     );
 
