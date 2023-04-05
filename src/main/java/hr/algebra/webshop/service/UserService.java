@@ -2,10 +2,10 @@ package hr.algebra.webshop.service;
 
 import hr.algebra.webshop.model.ShopUser;
 import hr.algebra.webshop.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService{
@@ -24,5 +24,8 @@ public class UserService{
     }
     public List<ShopUser> searchUsers(String keyword) {
         return userRepository.findByEmailContaining(keyword);
+    }
+    public ShopUser getUserById(Long id){
+        return userRepository.findShopUserByIdShopUser(id);
     }
 }

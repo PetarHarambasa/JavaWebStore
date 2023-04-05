@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @Controller
 public class AuthenticationController {
     private final UserService userService;
-    public static boolean authenticated = false;
+    public static ShopUser currentShopUser = new ShopUser();
     public AuthenticationController(UserService userService) {
         this.userService = userService;
     }
@@ -24,8 +24,9 @@ public class AuthenticationController {
     @GetMapping("/login")
     public String loginPage(Model model)
     {
-        model.addAttribute("CheckAuth", authenticated);
-        if (authenticated){
+        model.addAttribute("CheckAuth", currentShopUser.isAuthenticated());
+        model.addAttribute("UserRole", currentShopUser.getUserRoleId());
+        if (currentShopUser.isAuthenticated()){
             return "redirect:/dragonBallStore";
         }
         return "login";
@@ -41,12 +42,13 @@ public class AuthenticationController {
         } else {
             for (ShopUser searchShopUser : shopUserList) {
                 if (searchShopUser.getEmail().trim().equals(email.trim()) && passwordEncoder.matches(password.trim(), searchShopUser.getPassword().trim())) {
-                    model.addAttribute("CheckAuth", authenticated);
-                    authenticated = true;
+                    currentShopUser = userService.getUserById(searchShopUser.getIdShopUser());
+                    model.addAttribute("CheckAuth", currentShopUser.isAuthenticated());
+                    currentShopUser.setAuthenticated(true);
                     TimeUnit.SECONDS.sleep(3);
                     return "redirect:/dragonBallStore";
                 } else {
-                    model.addAttribute("CheckAuth", authenticated);
+                    model.addAttribute("CheckAuth", currentShopUser.isAuthenticated());
                     model.addAttribute("ErrorMessage", "Login failed! Wrong credentials!");
                     model.addAttribute("Message", "");
                 }
@@ -59,14 +61,14 @@ public class AuthenticationController {
     @GetMapping("/logout")
     public String logoutProcess(Model model)
     {
-        model.addAttribute("CheckAuth", authenticated);
-        if (!authenticated)
+        model.addAttribute("CheckAuth", currentShopUser.isAuthenticated());
+        if (!currentShopUser.isAuthenticated())
         {
             return "redirect:/login";
         }
-        authenticated = false;
+        currentShopUser.setAuthenticated(false);
         TimeUnit.SECONDS.sleep(2);
-        model.addAttribute("CheckAuth", authenticated);
+        model.addAttribute("CheckAuth", currentShopUser.isAuthenticated());
         return "login";
     }
 }

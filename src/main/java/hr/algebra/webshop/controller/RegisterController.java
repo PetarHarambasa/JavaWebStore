@@ -4,7 +4,6 @@ import hr.algebra.webshop.model.ShopUser;
 import hr.algebra.webshop.model.UserRole;
 import hr.algebra.webshop.service.UserService;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
-import static hr.algebra.webshop.controller.AuthenticationController.authenticated;
+import static hr.algebra.webshop.controller.AuthenticationController.currentShopUser;
 
 @Controller
 public class RegisterController {
@@ -25,8 +24,8 @@ public class RegisterController {
 
     @GetMapping("/register")
     public String registerPage(Model model) {
-        model.addAttribute("CheckAuth", authenticated);
-        if (authenticated){
+        model.addAttribute("CheckAuth", currentShopUser.isAuthenticated());
+        if (currentShopUser.isAuthenticated()){
             return "redirect:/dragonBallStore";
         }
         model.addAttribute("newUser", new ShopUser());
@@ -59,7 +58,7 @@ public class RegisterController {
                 }
             }
         }
-        model.addAttribute("CheckAuth", authenticated);
+        model.addAttribute("CheckAuth", currentShopUser.isAuthenticated());
         return "register";
     }
 

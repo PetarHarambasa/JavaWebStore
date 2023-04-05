@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import static hr.algebra.webshop.controller.AuthenticationController.authenticated;
+import static hr.algebra.webshop.controller.AuthenticationController.currentShopUser;
 
 @Controller
 public class DragonBallMerchController {
@@ -20,14 +20,14 @@ public class DragonBallMerchController {
 
     @GetMapping("/dragonBallStore")
     public String getProducts(Model model) {
-        model.addAttribute("CheckAuth", authenticated);
+        model.addAttribute("CheckAuth", currentShopUser);
         model.addAttribute("MerchList", merchService.getAllMerchItems());
         return "dragonBallItems";
     }
 
     @GetMapping("/dragonBallStore/product/{id}")
     public String getSingleProduct(@PathVariable Long id, Model model) {
-        model.addAttribute("CheckAuth", authenticated);
+        model.addAttribute("CheckAuth", currentShopUser.isAuthenticated());
         Merch merch = merchService.getSingleMerch(id);
         if (merch == null) {
             model.addAttribute("Product", "Product with id " + id + " not found!");

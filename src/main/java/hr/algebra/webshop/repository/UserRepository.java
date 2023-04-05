@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<ShopUser, Long> {
     List<ShopUser> findByEmailContaining(String email);
+    ShopUser findShopUserByIdShopUser(Long id);
 
 }
