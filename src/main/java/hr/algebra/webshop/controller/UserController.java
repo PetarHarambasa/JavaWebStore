@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import static hr.algebra.webshop.controller.AuthenticationController.isAuthenticated;
 
 @Controller
-public class HomeController {
-    @GetMapping("/")
-    public String home(Model model){
-        model.addAttribute("CheckAuth", isAuthenticated);
-        return "index";
+public class UserController {
+
+    @GetMapping("userProfile")
+    public String getUserProfileData(Model model){
+        if(isAuthenticated){
+            return "userProfile";
+        }
+        return "redirect:dragonBallStore";
     }
 }

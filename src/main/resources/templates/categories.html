@@ -16,7 +16,7 @@
 <div class="h-100 d-flex align-items-center justify-content-center">
     <div th:each="category : ${CategoryList}" class="m-5">
         <div class="card" style="width: 18rem;">
-            <a th:href="@{'/dragonBallCategories/category/' +  ${category.getId_category()}}">
+            <a th:href="@{'/dragonBallCategories/category/' +  ${category.getIdCategory()}}">
                 <img th:src="${category.getFrontImageBase64()}" class="card-img-top">
             </a>
             <div class="card-body">
@@ -40,8 +40,7 @@
         integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script th:src="${CheckAuth.isAuthenticated() && CheckAuth.getUserRoleId().equals(1)} ? '/js/navbarLoggedInAdmin.js' : '/js/navbar.js'"></script>
-<script th:src="${CheckAuth.isAuthenticated() && CheckAuth.getUserRoleId().equals(2)} ? '/js/navbarLoggedInUser.js' : '/js/navbar.js'"></script>
+<script th:src="${CheckAuth.equals(true)} ? '/js/navbarLoggedInUser.js' : '/js/navbar.js'"></script>
 <script th:src="@{/js/footer.js}"></script>
 </body>
 </html>

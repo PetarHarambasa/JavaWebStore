@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
-import static hr.algebra.webshop.controller.AuthenticationController.currentShopUser;
+import static hr.algebra.webshop.controller.AuthenticationController.isAuthenticated;
 
 @Controller
 public class RegisterController {
@@ -24,8 +24,8 @@ public class RegisterController {
 
     @GetMapping("/register")
     public String registerPage(Model model) {
-        model.addAttribute("CheckAuth", currentShopUser.isAuthenticated());
-        if (currentShopUser.isAuthenticated()){
+        model.addAttribute("CheckAuth", isAuthenticated);
+        if (isAuthenticated){
             return "redirect:/dragonBallStore";
         }
         model.addAttribute("newUser", new ShopUser());
@@ -58,7 +58,7 @@ public class RegisterController {
                 }
             }
         }
-        model.addAttribute("CheckAuth", currentShopUser.isAuthenticated());
+        model.addAttribute("CheckAuth", isAuthenticated);
         return "register";
     }
 

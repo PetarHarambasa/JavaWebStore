@@ -1,7 +1,6 @@
 package hr.algebra.webshop.service;
 
 import hr.algebra.webshop.model.Merch;
-import hr.algebra.webshop.model.ShopUser;
 import hr.algebra.webshop.repository.MerchRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,7 @@ public class MerchService{
             return null;
         }
     }
-    public List<Merch> getMerchesByCategoryId(Long id){
+    public List<Merch> getMerchByCategoryId(Long id){
         return merchRepository.findMerchesByCategoryId(id);
     }
 
