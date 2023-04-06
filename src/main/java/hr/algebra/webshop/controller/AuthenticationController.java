@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Controller
 public class AuthenticationController {
-    public static boolean isAuthenticated = false;
+    public static boolean isAuthenticated = true;
     private final UserService userService;
 
     public AuthenticationController(UserService userService) {
