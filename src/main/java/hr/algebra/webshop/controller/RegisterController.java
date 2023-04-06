@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import java.util.List;
 
 import static hr.algebra.webshop.controller.AuthenticationController.isAuthenticated;
 
@@ -25,7 +24,7 @@ public class RegisterController {
     @GetMapping("/register")
     public String registerPage(Model model) {
         model.addAttribute("CheckAuth", isAuthenticated);
-        if (isAuthenticated){
+        if (isAuthenticated) {
             return "redirect:/dragonBallStore";
         }
         model.addAttribute("newUser", new ShopUser());
@@ -45,17 +44,15 @@ public class RegisterController {
         String encodedPassword = passwordEncoder.encode(shopUser.getPassword());
         shopUser.setPassword(encodedPassword);
 
-        List<ShopUser> shopUserList = userService.searchUsers(shopUser.getEmail().trim());
-        if (shopUserList.isEmpty()) {
+        ShopUser newShopUser = userService.getUserByEmail(shopUser.getEmail().trim());
+        if (newShopUser == null) {
             userSaving(shopUser, model);
         } else {
-            for (ShopUser searchShopUser : shopUserList) {
-                if (searchShopUser.getEmail().trim().equals(shopUser.getEmail().trim())) {
-                    model.addAttribute("ErrorMessage", "Register failed! Email already exists!");
-                    model.addAttribute("Message", "");
-                } else {
-                    userSaving(shopUser, model);
-                }
+            if (newShopUser.getEmail().trim().equals(shopUser.getEmail().trim())) {
+                model.addAttribute("ErrorMessage", "Register failed! Email already exists!");
+                model.addAttribute("Message", "");
+            } else {
+                userSaving(shopUser, model);
             }
         }
         model.addAttribute("CheckAuth", isAuthenticated);

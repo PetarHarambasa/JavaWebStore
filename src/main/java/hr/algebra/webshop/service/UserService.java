@@ -22,10 +22,14 @@ public class UserService{
     public void saveUser(ShopUser shopUser) {
         userRepository.save(shopUser);
     }
-    public List<ShopUser> searchUsers(String keyword) {
-        return userRepository.findByEmailContaining(keyword);
+    public ShopUser getUserByEmailAndPassword(String email, String password) {
+        return userRepository.findByEmailContainingAndPasswordContaining(email, password);
     }
     public ShopUser getUserById(Long id){
         return userRepository.findShopUserByIdShopUser(id);
+    }
+
+    public ShopUser getUserByEmail(String email){
+        return userRepository.findByEmailContaining(email);
     }
 }
