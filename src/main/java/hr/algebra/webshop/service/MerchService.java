@@ -30,4 +30,8 @@ public class MerchService{
         return merchRepository.findMerchesByCategoryId(id);
     }
 
+    public void addNewMerch(Merch newMerch){
+        merchRepository.save(newMerch);
+    }
+
 }
