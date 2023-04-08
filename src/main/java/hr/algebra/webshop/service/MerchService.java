@@ -11,8 +11,11 @@ public class MerchService{
 
     private final MerchRepository merchRepository;
 
-    public MerchService(MerchRepository merchRepository) {
+    private final MerchImagesService merchImagesService;
+
+    public MerchService(MerchRepository merchRepository, MerchImagesService merchImagesService) {
         this.merchRepository = merchRepository;
+        this.merchImagesService = merchImagesService;
     }
 
     public List<Merch> getAllMerchItems() {
@@ -34,4 +37,8 @@ public class MerchService{
         merchRepository.save(newMerch);
     }
 
+    public void deleteMerchById(Long id){
+        merchImagesService.deleteImages(id);
+        merchRepository.deleteById(id);
+    }
 }

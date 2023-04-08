@@ -35,12 +35,12 @@
             <tr th:each="merch : ${merchList}">
                 <td><span th:text="${merch.idMerch}">  </span></td>
                 <td><span th:text="${merch.description}">  </span></td>
-                <td><span th:text= "'$'+${merch.price}">  </span></td>
+                <td><span th:text="'$'+${merch.price}">  </span></td>
                 <td><span th:text="${merch.rating}">  </span></td>
-                <td ><img id="adminImageView" th:src="${merch.frontImageBase64}" class="card-img-top"> </td>
+                <td><img id="adminImageView" th:src="${merch.frontImageBase64}" class="card-img-top"></td>
                 <td><span th:text="${@adminMerchController.getCategoryName(merch.categoryId)}">  </span></td>
-                <td><button type="submit" class="btn btn-success ">Edit Merch</button></td>
-                <td><button type="submit" class="btn btn-danger ">Delete Merch</button></td>
+                <td><a type="button" class="btn btn-success" th:href="@{/adminMerch/editMerch}">Edit</a></td>
+                <td><a type="button" class="btn btn-danger" th:href="@{'/adminMerch/deleteMerch/'+${merch.idMerch}}">Delete</a></td>
             </tr>
             </tbody>
         </table>

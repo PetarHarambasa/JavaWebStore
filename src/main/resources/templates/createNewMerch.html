@@ -22,23 +22,23 @@
             <form th:object="${newMerch}" method="post" action="/adminMerch/createNewMerch" enctype="multipart/form-data">
               <div class="form-group mb-3">
                 <label for="description">Description</label>
-                <input type="text" class="form-control" id="description" name="description" required>
+                <input type="text" class="form-control" id="description" th:field="*{description}" required>
               </div>
               <div class="form-group mb-3">
                 <label for="price">Price</label>
-                <input type="number" class="form-control" id="price" name="price" required>
+                <input type="number" class="form-control" id="price" th:field="*{price}" required>
               </div>
               <div class="form-group mb-3">
                 <label for="rating">Rating</label>
-                <input type="number" class="form-control" id="rating" name="rating" th:default="5" max="5" min="1" required >
+                <input type="number" class="form-control" id="rating" th:field="*{rating}" th:default="5" max="5" min="1" required >
               </div>
               <div class="form-group mb-3">
-                <label for="frontImageBase64">Upload front image:</label>
-                <input type="file" class="form-control" id="frontImageBase64" name="frontImageBase64" required>
+                <label for="imageBase64">Upload front image:</label>
+                <input type="file" class="form-control" id="imageBase64" name="imageBase64" required>
               </div>
               <div class="form-group mb-3">
                 <label for="categoryId">Category</label>
-                <select class="form-select" aria-label="Default select example" id="categoryId" name="categoryId"
+                <select class="form-select" aria-label="Default select example" id="categoryId" th:field="*{categoryId}"
                         th:required="required">
                   <option th:each="category :
                 ${@adminMerchController.getAllCategories()}"
