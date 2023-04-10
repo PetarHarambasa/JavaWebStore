@@ -22,7 +22,7 @@
             <tr>
                 <th scope="col"> Id</th>
                 <th scope="col"> Description</th>
-                <th scope="col"> Price</th>
+                <th scope="col"> Price $</th>
                 <th scope="col"> Rating</th>
                 <th scope="col"> Image</th>
                 <th scope="col"> Category</th>
@@ -39,7 +39,7 @@
                 <td><span th:text="${merch.rating}">  </span></td>
                 <td><img id="adminImageView" th:src="${merch.frontImageBase64}" class="card-img-top"></td>
                 <td><span th:text="${@adminMerchController.getCategoryName(merch.categoryId)}">  </span></td>
-                <td><a type="button" class="btn btn-success" th:href="@{/adminMerch/editMerch}">Edit</a></td>
+                <td><a type="button" class="btn btn-success" th:href="@{'/adminMerch/editMerch/'+${merch.idMerch}}">Edit</a></td>
                 <td><a type="button" class="btn btn-danger" th:href="@{'/adminMerch/deleteMerch/'+${merch.idMerch}}">Delete</a></td>
             </tr>
             </tbody>

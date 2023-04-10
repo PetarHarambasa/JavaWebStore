@@ -31,7 +31,7 @@ public class DragonBallMerchController {
         Merch merch = merchService.getSingleMerch(id);
         if (merch == null) {
             model.addAttribute("Product", "Product with id " + id + " not found!");
-            return "productNotFound";
+            return "notFound";
         }
         model.addAttribute("Product", merch);
         model.addAttribute("ProductStarts", merch.getRating());

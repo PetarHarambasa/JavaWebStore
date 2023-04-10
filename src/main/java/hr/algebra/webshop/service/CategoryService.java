@@ -1,6 +1,7 @@
 package hr.algebra.webshop.service;
 
 import hr.algebra.webshop.model.Category;
+import hr.algebra.webshop.model.Merch;
 import hr.algebra.webshop.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,4 +23,19 @@ public class CategoryService {
         return categoryRepository.findCategoryByIdCategory(id);
     }
 
+    public void addCategory(Category category){
+        categoryRepository.save(category);
+    }
+
+    public void deleteCategoryById(Long idCategory) {
+        categoryRepository.deleteById(idCategory);
+    }
+
+    public Category getSingleCategory(Long id){
+        if (categoryRepository.findById(id).isPresent()){
+            return categoryRepository.findById(id).get();
+        }else {
+            return null;
+        }
+    }
 }
