@@ -7,7 +7,7 @@ spring:
   datasource:
     database: web_shop_db
     db-schema: web_shop_schema
-    url: "jdbc:postgresql://localhost:5432/${spring.datasource.database}"
+    url: "jdbc:postgresql://localhost:5432/${spring.datasource.database}?currentSchema=${spring.datasource.db-schema}&user=${spring.datasource.username}&password=${spring.datasource.password}"
     username: admin
     password: admin
     hikari:
@@ -19,13 +19,13 @@ spring:
         default_schema: ${spring.datasource.db-schema}
         temp:
           use_jdbc_metadata_defaults: false
-        dialect: org.hibernate.dialect.PostgreSQL94Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         types.print.banner: false
     hibernate:
       ddl-auto: none
     show-sql: false
     generate-ddl: true
-    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     enabled: true
     schemas: ${spring.datasource.db-schema}

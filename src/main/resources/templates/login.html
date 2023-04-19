@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-header">Login into the Dragon Ball store</div>
                 <div class="card-body">
-                    <form method="post" action="/login">
+                    <form method="post" th:action="@{/login}">
                         <div class="form-group mb-3">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required>
