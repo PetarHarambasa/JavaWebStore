@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import static hr.algebra.webshop.controller.AuthenticationController.isAuthenticated;
+import static hr.algebra.webshop.controller.AuthenticationController.authenticatedShopUser;
 
 
 @Controller
@@ -22,14 +22,14 @@ public class CategoryController {
 
     @GetMapping("/dragonBallCategories")
     public String getCategories(Model model) {
-        model.addAttribute("CheckAuth", isAuthenticated);
+        model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
         model.addAttribute("CategoryList", categoryService.getAllCategories());
         return "categories";
     }
 
     @GetMapping("/dragonBallCategories/category/{id}")
     public String getSingleProduct(@PathVariable Long id, Model model) {
-        model.addAttribute("CheckAuth", isAuthenticated);
+        model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
         if (merchService.getMerchByCategoryId(id).isEmpty()) {
             model.addAttribute("MerchByCategory", "Category with id " + id + " doesn't exist or doesn't have any products");
             return "productsByCategoryNotFound";

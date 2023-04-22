@@ -4,14 +4,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import static hr.algebra.webshop.controller.AuthenticationController.isAuthenticated;
+import static hr.algebra.webshop.controller.AuthenticationController.authenticatedShopUser;
 
 @Controller
 public class UserController {
 
     @GetMapping("userProfile")
-    public String getUserProfileData(Model model){
-        if(isAuthenticated){
+    public String getUserProfileData(Model model) {
+        if (authenticatedShopUser.isAuthenticated()) {
+            model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
             return "userProfile";
         }
         return "redirect:dragonBallStore";

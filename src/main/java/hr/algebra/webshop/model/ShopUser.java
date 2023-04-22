@@ -2,10 +2,12 @@ package hr.algebra.webshop.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="shop_user")
 @Data
+@NoArgsConstructor
 public class ShopUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +30,7 @@ public class ShopUser {
     @JoinColumn(referencedColumnName = "id_user_role")
     private Long userRoleId;
 
+    public ShopUser(boolean authenticated) {
+        this.authenticated = authenticated;
+    }
 }

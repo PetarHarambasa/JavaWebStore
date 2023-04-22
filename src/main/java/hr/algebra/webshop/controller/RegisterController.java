@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import static hr.algebra.webshop.controller.AuthenticationController.isAuthenticated;
+import static hr.algebra.webshop.controller.AuthenticationController.authenticatedShopUser;
 
 @Controller
 public class RegisterController {
@@ -23,8 +23,8 @@ public class RegisterController {
 
     @GetMapping("/register")
     public String registerPage(Model model) {
-        model.addAttribute("CheckAuth", isAuthenticated);
-        if (isAuthenticated) {
+        model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
+        if (authenticatedShopUser.isAuthenticated()) {
             return "redirect:/dragonBallStore";
         }
         model.addAttribute("newUser", new ShopUser());
@@ -33,7 +33,8 @@ public class RegisterController {
 
     @SneakyThrows
     @PostMapping("/register")
-    public String processRegistrationForm(@ModelAttribute("newUser") ShopUser shopUser, @ModelAttribute("role") UserRole role, Model model) {
+    public String processRegistrationForm(@ModelAttribute("newUser") ShopUser shopUser,
+                                          @ModelAttribute("role") UserRole role, Model model) {
         if (role.name().equals("ADMIN")) {
             shopUser.setUserRoleId(1L);
         } else if (role.name().equals("CUSTOMER")) {
@@ -55,7 +56,7 @@ public class RegisterController {
                 userSaving(shopUser, model);
             }
         }
-        model.addAttribute("CheckAuth", isAuthenticated);
+        model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
         return "register";
     }
 

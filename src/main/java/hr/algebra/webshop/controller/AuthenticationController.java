@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 @Controller
 public class AuthenticationController {
-    public static boolean isAuthenticated = true;
+    public static ShopUser authenticatedShopUser = new ShopUser(false);
     private final UserService userService;
 
     public AuthenticationController(UserService userService) {
@@ -23,8 +23,8 @@ public class AuthenticationController {
 
     @GetMapping("/login")
     public String loginPage(Model model) {
-        model.addAttribute("CheckAuth", isAuthenticated);
-        if (isAuthenticated) {
+        model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
+        if (authenticatedShopUser.isAuthenticated()) {
             return "redirect:/dragonBallStore";
         }
         return "login";
@@ -36,16 +36,18 @@ public class AuthenticationController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         ShopUser shopUser = userService.getUserByEmail(email);
         if (shopUser == null) {
-            model.addAttribute("CheckAuth", isAuthenticated);
+            model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
             model.addAttribute("ErrorMessage", "Login failed! Wrong credentials!");
         } else {
             if (shopUser.getEmail().trim().equals(email.trim()) && passwordEncoder.matches(password.trim(), shopUser.getPassword().trim())) {
-                model.addAttribute("CheckAuth", isAuthenticated);
-                isAuthenticated = true;
-                TimeUnit.SECONDS.sleep(3);
+                model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
+                authenticatedShopUser = shopUser;
+                authenticatedShopUser.setAuthenticated(true);
+                userService.saveUser(authenticatedShopUser);
+                TimeUnit.SECONDS.sleep(1);
                 return "redirect:/dragonBallStore";
             } else {
-                model.addAttribute("CheckAuth", isAuthenticated);
+                model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
                 model.addAttribute("ErrorMessage", "Login failed! Wrong credentials!");
                 model.addAttribute("Message", "");
             }
@@ -56,13 +58,14 @@ public class AuthenticationController {
     @SneakyThrows
     @GetMapping("/logout")
     public String logoutProcess(Model model) {
-        model.addAttribute("CheckAuth", isAuthenticated);
-        if (!isAuthenticated) {
+        model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
+        if (!authenticatedShopUser.isAuthenticated()) {
             return "redirect:/login";
         }
-        isAuthenticated = false;
-        TimeUnit.SECONDS.sleep(2);
-        model.addAttribute("CheckAuth", isAuthenticated);
+        authenticatedShopUser.setAuthenticated(false);
+        userService.saveUser(authenticatedShopUser);
+        TimeUnit.SECONDS.sleep(1);
+        model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
         return "login";
     }
 }
