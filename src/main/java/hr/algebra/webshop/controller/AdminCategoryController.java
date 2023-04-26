@@ -25,7 +25,7 @@ public class AdminCategoryController {
     @GetMapping("/adminCategory")
     public String getAdminCategory(Model model) {
         model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
-        if (authenticatedShopUser.isAuthenticated()) {
+        if (authenticatedShopUser.isAuthenticated() && authenticatedShopUser.getUserRoleId() == 1) {
             model.addAttribute("categoryList", categoryService.getAllCategories());
             return "adminCategory";
         }
@@ -35,8 +35,11 @@ public class AdminCategoryController {
     @GetMapping("/adminCategory/createNewCategory")
     public String createNewCategory(Model model) {
         model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
-        model.addAttribute("newCategory", new Category());
-        return "createNewCategory";
+        if (authenticatedShopUser.isAuthenticated() && authenticatedShopUser.getUserRoleId() == 1) {
+            model.addAttribute("newCategory", new Category());
+            return "createNewCategory";
+        }
+        return "redirect:/dragonBallStore";
     }
 
     @PostMapping("/adminCategory/createNewCategory")
@@ -52,28 +55,34 @@ public class AdminCategoryController {
     @GetMapping("/adminCategory/deleteCategory/{idCategory}")
     public String deleteCategory(@PathVariable Long idCategory, Model model) {
         model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
-        if (idCategory == null) {
+        if (authenticatedShopUser.isAuthenticated() && authenticatedShopUser.getUserRoleId() == 1) {
+            if (idCategory == null) {
+                return "redirect:/adminCategory";
+            }
+            categoryService.deleteCategoryById(idCategory);
             return "redirect:/adminCategory";
         }
-        categoryService.deleteCategoryById(idCategory);
-        return "redirect:/adminCategory";
+        return "redirect:/dragonBallStore";
     }
 
     @GetMapping("/adminCategory/editCategory/{idCategory}")
     public String editCategory(@PathVariable Long idCategory, Model model) {
         model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
-        Category category = categoryService.getSingleCategory(idCategory);
-        if (category == null) {
-            model.addAttribute("Category", "Category with id " + idCategory + " not found!");
-            return "notFound";
+        if (authenticatedShopUser.isAuthenticated() && authenticatedShopUser.getUserRoleId() == 1) {
+            Category category = categoryService.getSingleCategory(idCategory);
+            if (category == null) {
+                model.addAttribute("Category", "Category with id " + idCategory + " not found!");
+                return "notFound";
+            }
+            model.addAttribute("editCategory", category);
+            return "editCategory";
         }
-        model.addAttribute("editCategory", category);
-        return "editCategory";
+        return "redirect:/dragonBallStore";
     }
 
     @PostMapping("/adminCategory/editCategory/{idCategory}")
     public String editCategory(@ModelAttribute("editCategory") Category editCategory,
-                            @RequestParam("imageBase64") MultipartFile imageBase64,
+                               @RequestParam("imageBase64") MultipartFile imageBase64,
                                Model model) throws IOException {
         Category currentEditedCategory = categoryService.getSingleCategory(editCategory.getIdCategory());
         if (!Objects.equals(imageBase64.getOriginalFilename(), "")) {
