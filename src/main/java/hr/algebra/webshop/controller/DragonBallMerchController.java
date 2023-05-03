@@ -3,6 +3,7 @@ package hr.algebra.webshop.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hr.algebra.webshop.model.Merch;
 import hr.algebra.webshop.model.MerchCart;
+import hr.algebra.webshop.service.MerchCartService;
 import hr.algebra.webshop.service.MerchService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,6 +16,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static hr.algebra.webshop.controller.AuthenticationController.authenticatedShopUser;
 
@@ -22,13 +24,17 @@ import static hr.algebra.webshop.controller.AuthenticationController.authenticat
 public class DragonBallMerchController {
 
     private final MerchService merchService;
+    private final MerchCartService merchCartService;
 
-    public DragonBallMerchController(MerchService merchService) {
+    public DragonBallMerchController(MerchService merchService, MerchCartService merchCartService) {
         this.merchService = merchService;
+        this.merchCartService = merchCartService;
     }
 
-    List<MerchCart> merchCartItems = new ArrayList<>();
+    public static List<MerchCart> merchCartItems = new ArrayList<>();
     ObjectMapper objectMapper = new ObjectMapper();
+
+    private Long counterMerchCartIdInCart = 0L;
 
     @GetMapping("/dragonBallStore")
     public String getProducts(Model model) {
@@ -56,7 +62,12 @@ public class DragonBallMerchController {
                                                       HttpServletResponse response, Model model) {
         model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
         if(authenticatedShopUser.getIdShopUser() == null){
-            MerchCart merchCart = new MerchCart(merchId, amount);
+            while (merchCartItems.stream().
+                    anyMatch(merchCart -> Objects.equals(merchCart.getMerchIdInCart(), counterMerchCartIdInCart)))
+            {
+                counterMerchCartIdInCart = counterMerchCartIdInCart + 1;
+            }
+            MerchCart merchCart = new MerchCart(merchId, amount, counterMerchCartIdInCart);
             merchCartItems.add(merchCart);
 
             String cartItemsJson = objectMapper.writeValueAsString(merchCartItems);
@@ -66,7 +77,11 @@ public class DragonBallMerchController {
             cartCookie.setPath("/");
 
             response.addCookie(cartCookie);
+        }else {
+            MerchCart merchCart = new MerchCart(merchId, authenticatedShopUser.getIdShopUser(), amount);
+            merchCartService.addMerchCart(merchCart);
         }
+        model.addAttribute("CartMerchList", merchCartItems);
 
         return "redirect:/merchCart";
     }

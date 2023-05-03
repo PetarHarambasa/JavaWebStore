@@ -9,11 +9,11 @@ import static hr.algebra.webshop.controller.AuthenticationController.authenticat
 @Controller
 public class UserController {
 
-    @GetMapping("userProfile")
-    public String getUserProfileData(Model model) {
+    @GetMapping("userHistory")
+    public String getUserHistory(Model model) {
         if (authenticatedShopUser.isAuthenticated()) {
             model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
-            return "userProfile";
+            return "userHistory";
         }
         return "redirect:dragonBallStore";
     }

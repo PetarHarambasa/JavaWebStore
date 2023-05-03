@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+
+import static hr.algebra.webshop.controller.DragonBallMerchController.merchCartItems;
 
 @Controller
 public class AuthenticationController {
@@ -64,7 +67,8 @@ public class AuthenticationController {
         }
         authenticatedShopUser.setAuthenticated(false);
         userService.saveUser(authenticatedShopUser);
-        TimeUnit.SECONDS.sleep(1);
+        authenticatedShopUser = new ShopUser(false);
+        merchCartItems = Collections.emptyList();
         model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
         return "login";
     }
