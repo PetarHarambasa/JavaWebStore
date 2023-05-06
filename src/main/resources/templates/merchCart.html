@@ -20,6 +20,7 @@
             <thead>
             <tr>
                 <th scope="col"> Merch</th>
+                <th scope="col"> Per Amount</th>
                 <th scope="col"> Amount</th>
             </tr>
             </thead>
@@ -29,7 +30,11 @@
             </tr>
             <tr th:each="merchInCart : ${CartMerchList}">
                 <td><span th:text="${@merchCartController.getMerchName(merchInCart.getMerchId())}"></span></td>
-                <td><span th:text="${merchInCart.getAmount()}"></span></td>
+                <td><span th:text="${@merchCartController.getMerchPrice(merchInCart.getMerchId())} + '$'"
+                          class="perAmount">
+
+                </span></td>
+                <td><span th:text="${merchInCart.getAmount()}" class="amount"></span></td>
                 <td><a type="button" class="btn btn-secondary"
                        th:href="@{'/merchCart/editAmountOfItemInCart/' + ${merchInCart.getMerchIdInCart()}}">Change
                     Amount</a></td>
@@ -38,6 +43,11 @@
                     Cart</a></td>
             </tr>
             </tbody>
+            <tfoot>
+            <tr>
+                <th>Total Price: <span class="totalPrice">0$</span></th>
+            </tr>
+            </tfoot>
         </table>
     </div>
 </div>
@@ -61,5 +71,6 @@
                 (${AuthenticatedShopUser.getUserRoleId() == 1} ? '/js/navbarLoggedInAdmin.js' :
                 '/js/navbarLoggedInUser.js')"></script>
 <script th:src="@{/js/footer.js}"></script>
+<script type="module" th:src="@{/js/merchCart.js}"></script>
 </body>
 </html>

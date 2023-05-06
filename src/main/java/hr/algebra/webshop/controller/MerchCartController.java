@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -94,6 +95,9 @@ public class MerchCartController {
 
     public String getMerchName(Long id) {
         return merchService.getSingleMerch(id).getDescription();
+    }
+    public BigDecimal getMerchPrice(Long id) {
+        return merchService.getSingleMerch(id).getPrice();
     }
 
     @SneakyThrows

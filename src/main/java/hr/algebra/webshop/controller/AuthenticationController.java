@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
@@ -68,7 +69,7 @@ public class AuthenticationController {
         authenticatedShopUser.setAuthenticated(false);
         userService.saveUser(authenticatedShopUser);
         authenticatedShopUser = new ShopUser(false);
-        merchCartItems = Collections.emptyList();
+        merchCartItems = new ArrayList<>();
         model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
         return "login";
     }

@@ -8,11 +8,13 @@
         rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
         crossorigin="anonymous">
   <link th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
-
+  <link th:href="@{/css/paypal.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
 
 <div id="navbar"></div>
+
+<div id="paypal-button-container"></div>
 
 <div id="footer"></div>
 
@@ -30,5 +32,9 @@
                 (${AuthenticatedShopUser.getUserRoleId() == 1} ? '/js/navbarLoggedInAdmin.js' :
                 '/js/navbarLoggedInUser.js')"></script>
 <script th:src="@{/js/footer.js}"></script>
+<script data-sdk-integration-source="integrationbuilder_ac"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AXFtdRtYXzwMEy7e91UVOUpIl6FFNRk7kRg3EJ6XeeypHlojDFiv92AN4kHkZzbFaMsAwLijrgq5z4Od&currency=USD"></script>
+<script type="module" th:src="@{/js/paypal.js}"></script>
+
 </body>
 </html>

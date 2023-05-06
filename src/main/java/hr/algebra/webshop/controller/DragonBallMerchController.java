@@ -10,7 +10,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -58,16 +61,16 @@ public class DragonBallMerchController {
     @SneakyThrows
     @PostMapping("/dragonBallStore/product/{id}")
     public String saveSingleProductToCart(@RequestParam("amount") int amount,
-                                                      @RequestParam("merchId") Long merchId,
-                                                      HttpServletResponse response, Model model) {
+                                          @RequestParam("merchId") Long merchId,
+                                          HttpServletResponse response, Model model) {
         model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
-        if(authenticatedShopUser.getIdShopUser() == null){
+        if (authenticatedShopUser.getIdShopUser() == null) {
             while (merchCartItems.stream().
-                    anyMatch(merchCart -> Objects.equals(merchCart.getMerchIdInCart(), counterMerchCartIdInCart)))
-            {
+                    anyMatch(merchCart -> Objects.equals(merchCart.getMerchIdInCart(), counterMerchCartIdInCart))) {
                 counterMerchCartIdInCart = counterMerchCartIdInCart + 1;
             }
             MerchCart merchCart = new MerchCart(merchId, amount, counterMerchCartIdInCart);
+            System.out.println(merchCart);
             merchCartItems.add(merchCart);
 
             String cartItemsJson = objectMapper.writeValueAsString(merchCartItems);
@@ -77,7 +80,7 @@ public class DragonBallMerchController {
             cartCookie.setPath("/");
 
             response.addCookie(cartCookie);
-        }else {
+        } else {
             MerchCart merchCart = new MerchCart(merchId, authenticatedShopUser.getIdShopUser(), amount);
             merchCartService.addMerchCart(merchCart);
         }
