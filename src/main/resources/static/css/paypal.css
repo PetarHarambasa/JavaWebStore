@@ -1,5 +1,13 @@
 #paypal-button-container{
-    margin-top: 100px;
     display: flex;
     justify-content: center;
+}
+
+#btnCash{
+    width: 740px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 23px;
+    border-radius: 25px;
 }

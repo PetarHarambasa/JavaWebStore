@@ -9,8 +9,6 @@ $(function () {
         totalPrice += parseFloat(allPerAmountPrice[i].innerHTML.substring(0,
             allPerAmountPrice[i].innerHTML.length - 1)) * parseInt(allAmountValues[i].innerHTML);
     }
-    document.querySelector('.totalPrice').innerHTML = totalPrice + '$';
-
+    document.cookie = "totalPriceCookie="+totalPrice;
+    document.querySelector('.totalPrice').innerHTML = '$'+totalPrice;
 });
-
-export {totalPrice}

@@ -14,6 +14,14 @@
 
 <div id="navbar"></div>
 
+<div class="h-100 d-flex align-items-center justify-content-center">
+  <form method="post" th:action="'/userHistory'">
+    <div class="form-group mb-3">
+      <input type="text" class="form-control" id="name" name="typeOfPurchase" hidden value="CASH">
+    </div>
+    <button type="submit" id="btnCash" class="btn btn-primary mt-3">Cash</button>
+  </form>
+</div>
 <div id="paypal-button-container"></div>
 
 <div id="footer"></div>
