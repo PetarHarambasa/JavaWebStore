@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface MerchCartRepository extends JpaRepository<MerchCart, Long> {
     List<MerchCart> getAllByShopUserId(Long id);
+
     MerchCart getMerchCartByIdMerchCart(Long id);
 
 }
