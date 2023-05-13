@@ -12,6 +12,62 @@
 <body>
 <div id="navbar"></div>
 
+<div class="container mt-5" id="mainContainer">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col"> Bill number</th>
+                <th scope="col"> Date and time of purchase</th>
+                <th scope="col"> Method of payment</th>
+                <th scope="col"> Total price</th>
+                <th scope="col"> Cart items</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            <tr th:if="${MapOfPurchasedCartList.empty}">
+                <td colspan="2"> You haven't made any purchase yet</td>
+            </tr>
+            <tr th:each="purchasedCartBill : ${MapOfPurchasedCartList}">
+                <td><span th:text="'HR-'+${purchasedCartBill.key}">  </span></td>
+                <td><span
+                        th:text="${@userController.formatDateTimeForBill
+                        (@userController.getPurchasedBill(purchasedCartBill.key).getDateOfBuying())}"> </span>
+                </td>
+                <td><span th:text="${@userController.getPurchaseTypeName(@userController.
+                getPurchasedBill(purchasedCartBill.key).getPurchaseTypeId())}">  </span></td>
+                <td><span th:text="'$'+${@userController.getPurchasedBill(purchasedCartBill.key).getTotalPrice()}">  </span>
+                </td>
+                <td>
+                    <table class="table table-borderless">
+                        <thead>
+                        <tr>
+                            <th scope="col"> Merch</th>
+                            <th scope="col"> Per amount</th>
+                            <th scope="col"> Amount</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                        <tr th:each="purchasedCart : ${purchasedCartBill.value}">
+                            <td><span
+                                    th:text="${@merchCartController.getMerchName(purchasedCart.getMerchId())}">  </span>
+                            </td>
+                            <td><span
+                                    th:text="'$'+${@merchCartController.getMerchPrice(purchasedCart.getMerchId())}"
+                                    class="perAmount">  </span>
+                            </td>
+                            <td><span
+                                    th:text="${purchasedCart.getAmount()}" class="amount">  </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <div id="footer"></div>
 

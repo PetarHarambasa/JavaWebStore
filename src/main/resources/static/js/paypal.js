@@ -44,7 +44,8 @@ paypal.Buttons({
                 xhr.open("POST", url, true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-                const data = "typeOfPurchase=PAYPAL";
+                const paramTypeOfPurchase = "PAYPAL";
+                const paramTotalPrice = totalPrice.toString();
 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -57,6 +58,8 @@ paypal.Buttons({
                         }
                     }
                 };
+
+                const data = `typeOfPurchase=${paramTypeOfPurchase}&totalPrice=${paramTotalPrice}`;
 
                 xhr.send(data);
 

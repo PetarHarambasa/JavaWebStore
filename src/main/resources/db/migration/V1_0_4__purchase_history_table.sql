@@ -9,6 +9,7 @@ INSERT INTO web_shop_schema.purchased_type (name) VALUES ('CASH');
 CREATE TABLE IF NOT EXISTS web_shop_schema.purchased_bill (
     id_purchase_bill SERIAL PRIMARY KEY ,
     date_of_buying TIMESTAMP DEFAULT LOCALTIMESTAMP,
+    total_price numeric (10, 2) not null ,
     purchase_type_id int not null REFERENCES web_shop_schema.purchased_type(id_purchase_type) not null
 );
 

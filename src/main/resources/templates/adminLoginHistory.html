@@ -7,23 +7,36 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
         rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
         crossorigin="anonymous">
-  <link th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
-  <link th:href="@{/css/paypal.css}" rel="stylesheet" type="text/css">
+  <link th:href="@{css/footer.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
-
 <div id="navbar"></div>
 
-<div class="h-100 d-flex align-items-center justify-content-center">
-  <form method="post" th:action="'/userHistory'">
-    <div class="form-group mb-3">
-      <input type="text" class="form-control" id="typeOfPurchase" name="typeOfPurchase" hidden value="CASH">
-      <input type="text" class="form-control" id="totalPrice" name="totalPrice" hidden >
-    </div>
-    <button type="submit" id="btnCash" class="btn btn-primary mt-3">Cash</button>
-  </form>
+<div class="container mt-5" id="mainContainer">
+  <div class="h-100 d-flex align-items-center justify-content-center">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col"> Name</th>
+        <th scope="col"> Email</th>
+        <th scope="col"> Date and Time of Login</th>
+        <th scope="col"> Ip Address</th>
+      </tr>
+      </thead>
+      <tbody class="table-group-divider">
+      <tr th:if="${shopUserLoginList.empty}">
+        <td colspan="2"> No Categories available</td>
+      </tr>
+      <tr th:each="ShopUser : ${shopUserLoginList}">
+        <td><span th:text="${ShopUser.loginUsername}">  </span></td>
+        <td><span th:text="${ShopUser.loginEmail}">  </span></td>
+        <td><span th:text="${ShopUser.dateOfLogin}">  </span></td>
+        <td><span th:text="${ShopUser.loginAddress}">  </span></td>
+            </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-<div id="paypal-button-container"></div>
 
 <div id="footer"></div>
 
@@ -37,14 +50,9 @@
         integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script th:src="${!AuthenticatedShopUser.isAuthenticated()} ? '/js/navbar.js' :
-                (${AuthenticatedShopUser.getUserRoleId() == 1} ? '/js/navbarLoggedInAdmin.js' :
-                '/js/navbarLoggedInUser.js')"></script>
-<script th:src="@{/js/footer.js}"></script>
-<script data-sdk-integration-source="integrationbuilder_ac"></script>
-<script src="https://www.paypal.com/sdk/js?client-id=AXFtdRtYXzwMEy7e91UVOUpIl6FFNRk7kRg3EJ6XeeypHlojDFiv92AN4kHkZzbFaMsAwLijrgq5z4Od&currency=USD"></script>
-<script type="module" th:src="@{/js/paypal.js}"></script>
-<script type="module" th:src="@{/js/checkout.js}"></script>
-
+<script th:src="${!AuthenticatedShopUser.isAuthenticated()} ? 'js/navbar.js' :
+                (${AuthenticatedShopUser.getUserRoleId() == 1} ? 'js/navbarLoggedInAdmin.js' :
+                'js/navbarLoggedInUser.js')"></script>
+<script th:src="@{js/footer.js}"></script>
 </body>
 </html>

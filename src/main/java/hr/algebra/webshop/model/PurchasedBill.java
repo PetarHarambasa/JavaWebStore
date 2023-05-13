@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
@@ -23,12 +24,16 @@ public class PurchasedBill {
     @JoinColumn(referencedColumnName = "id_purchase_type")
     private Long purchaseTypeId;
 
+    @Column(name = "total_price", nullable = false)
+    private BigDecimal totalPrice;
+
     public PurchasedBill(Long purchaseTypeId) {
         this.purchaseTypeId = purchaseTypeId;
     }
 
-    public PurchasedBill(Timestamp dateOfBuying, Long purchaseTypeId) {
+    public PurchasedBill(Timestamp dateOfBuying, Long purchaseTypeId, BigDecimal totalPrice) {
         this.dateOfBuying = dateOfBuying;
         this.purchaseTypeId = purchaseTypeId;
+        this.totalPrice = totalPrice;
     }
 }
