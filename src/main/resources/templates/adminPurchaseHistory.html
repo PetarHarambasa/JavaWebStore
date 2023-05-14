@@ -1,87 +1,103 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Dragon Ball Store</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-        rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
-        crossorigin="anonymous">
-  <link th:href="@{css/footer.css}" rel="stylesheet" type="text/css">
+    <title>Dragon Ball Store</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+          crossorigin="anonymous">
+    <link th:href="@{css/footer.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div id="navbar"></div>
 
 <div class="container mt-5" id="mainContainer">
-  <div class="h-100 d-flex align-items-center justify-content-center">
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col"> Username</th>
-        <th scope="col"> Bills</th>
-      </tr>
-      </thead>
-      <tbody class="table-group-divider">
-      <tr th:if="${mapOfShopUsersWithMapOfPurchasedCartList.empty}">
-        <td colspan="2"> No Products were yet bought</td>
-      </tr>
-      <tr th:each="shopUser : ${mapOfShopUsersWithMapOfPurchasedCartList}">
-        <td><span th:text="${@adminPurchaseHistory.getShopUserName(shopUser.key)}"></span></td>
-        <td>
-          <table class="table table-borderless">
+    <form method="post" th:action="'/applyFilter'">
+        <label for="fromDate">From Date:</label>
+        <input type="date" id="fromDate" name="fromDate">
+
+        <label for="toDate">To Date:</label>
+        <input type="date" id="toDate" name="toDate">
+
+        <label for="selectShopUsers">Choose Shop User:</label>
+        <select id="selectShopUsers" name="userName"></select>
+
+        <button type="submit" id="searchFilter" class="btn btn-primary">Search</button>
+    </form>
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <table class="table">
             <thead>
             <tr>
-              <th scope="col"> Bill number</th>
-              <th scope="col"> Date and time of purchase</th>
-              <th scope="col"> Method of payment</th>
-              <th scope="col"> Total price</th>
-              <th scope="col"> Cart items</th>
+                <th scope="col"> Username</th>
+                <th scope="col"> Bills</th>
             </tr>
             </thead>
-            <tbody class="table-group-divider" th:each="Bills : ${shopUser.value}">
-              <tr th:each="purchasedBills : ${@adminPurchaseHistory.getPurchasedBillsById(Bills.key)}">
-              <td><span th:text="'HR-'+${purchasedBills.getIdPurchaseBill()}">  </span></td>
-              <td><span
-                      th:text="${@userController.formatDateTimeForBill
-                        (@userController.getPurchasedBill(purchasedBills.getIdPurchaseBill()).getDateOfBuying())}"> </span>
-              </td>
-              <td><span th:text="${@userController.getPurchaseTypeName(@userController.
-                getPurchasedBill(purchasedBills.getIdPurchaseBill()).getPurchaseTypeId())}">  </span></td>
-              <td><span th:text="'$'+${@userController.getPurchasedBill(purchasedBills.getIdPurchaseBill()).getTotalPrice()}">  </span>
-              </td>
+            <tbody class="table-group-divider">
+            <tr th:if="${mapOfShopUsersWithMapOfPurchasedCartList.empty}">
+                <td colspan="2"> No Products were yet bought</td>
+            </tr>
+            <tr th:each="shopUser : ${mapOfShopUsersWithMapOfPurchasedCartList}">
+                <td><span th:text="${@adminPurchaseHistory.getShopUserName(shopUser.key)}"></span></td>
                 <td>
-                  <table class="table table-borderless">
-                    <thead>
-                    <tr>
-                      <th scope="col"> Merch</th>
-                      <th scope="col"> Per amount</th>
-                      <th scope="col"> Amount</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-                    <tr th:each="purchasedCart : ${Bills.value}">
-                      <td><span
-                              th:text="${@merchCartController.getMerchName(purchasedCart.getMerchId())}">  </span>
-                      </td>
-                      <td><span
-                              th:text="'$'+${@merchCartController.getMerchPrice(purchasedCart.getMerchId())}"
-                              class="perAmount">  </span>
-                      </td>
-                      <td><span
-                              th:text="${purchasedCart.getAmount()}" class="amount">  </span>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
+                    <table class="table table-borderless">
+                        <thead>
+                        <tr>
+                            <th scope="col"> Bill number</th>
+                            <th scope="col"> Date and time of purchase</th>
+                            <th scope="col"> Method of payment</th>
+                            <th scope="col"> Total price</th>
+                            <th scope="col"> Cart items</th>
+                        </tr>
+                        <tr th:if="${shopUser.value.empty}">
+                            <td colspan="2"> No Products available </td>
+                        </tr>
+                        </thead>
+                        <tbody class="table-group-divider" th:each="Bills : ${shopUser.value}">
+                        <tr th:each="purchasedBills : ${@adminPurchaseHistory.getPurchasedBillsById(Bills.key)}">
+                            <td><span th:text="'HR-'+${purchasedBills.getIdPurchaseBill()}">  </span></td>
+                            <td><span
+                                    th:text="${@userController.formatDateTimeForBill
+                        (@userController.getPurchasedBill(purchasedBills.getIdPurchaseBill()).getDateOfBuying())}"> </span>
+                            </td>
+                            <td><span th:text="${@userController.getPurchaseTypeName(@userController.
+                getPurchasedBill(purchasedBills.getIdPurchaseBill()).getPurchaseTypeId())}">  </span></td>
+                            <td><span
+                                    th:text="'$'+${@userController.getPurchasedBill(purchasedBills.getIdPurchaseBill()).getTotalPrice()}">  </span>
+                            </td>
+                            <td>
+                                <table class="table table-borderless">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col"> Merch</th>
+                                        <th scope="col"> Per amount</th>
+                                        <th scope="col"> Amount</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="table-group-divider">
+                                    <tr th:each="purchasedCart : ${Bills.value}">
+                                        <td><span
+                                                th:text="${@merchCartController.getMerchName(purchasedCart.getMerchId())}">  </span>
+                                        </td>
+                                        <td><span
+                                                th:text="'$'+${@merchCartController.getMerchPrice(purchasedCart.getMerchId())}"
+                                                class="perAmount">  </span>
+                                        </td>
+                                        <td><span
+                                                th:text="${purchasedCart.getAmount()}" class="amount">  </span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </td>
-              </tr>
+            </tr>
             </tbody>
-          </table>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+        </table>
+    </div>
 </div>
 
 <div id="footer"></div>
@@ -100,5 +116,6 @@
                 (${AuthenticatedShopUser.getUserRoleId() == 1} ? 'js/navbarLoggedInAdmin.js' :
                 'js/navbarLoggedInUser.js')"></script>
 <script th:src="@{js/footer.js}"></script>
+<script th:src="@{js/adminPurchaseHistory.js}"></script>
 </body>
 </html>

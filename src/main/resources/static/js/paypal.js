@@ -45,7 +45,7 @@ paypal.Buttons({
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
                 const paramTypeOfPurchase = "PAYPAL";
-                const paramTotalPrice = totalPrice.toString();
+                const paramTotalPrice = parseFloat(getCookieValue('totalPriceCookie'))
 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {

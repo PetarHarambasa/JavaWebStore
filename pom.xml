@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>WebShop</name>
     <description>WebShop</description>
+    <packaging>war</packaging>
     <properties>
         <java.version>19</java.version>
     </properties>

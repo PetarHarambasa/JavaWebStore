@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,14 +45,7 @@ public class UserController {
             List<PurchasedCart> purchasedCartList = purchasedCartService.getPurchasedCartListByShopUserId
                     (authenticatedShopUser.getIdShopUser());
             for (PurchasedCart purchasedCart : purchasedCartList) {
-                List<PurchasedCart> purchasedCartListForMap = mapOfPurchasedCartList.get(purchasedCart.getPurchasedBillId());
-                if (purchasedCartListForMap == null) {
-                    purchasedCartListForMap = new ArrayList<>();
-                    purchasedCartListForMap.add(purchasedCart);
-                }else{
-                    purchasedCartListForMap.add(purchasedCart);
-                }
-                mapOfPurchasedCartList.put(purchasedCart.getPurchasedBillId(), purchasedCartListForMap);
+                AdminPurchaseHistory.fillPurchasedCartListForMap(mapOfPurchasedCartList, purchasedCart);
             }
 
             model.addAttribute("MapOfPurchasedCartList", mapOfPurchasedCartList);
@@ -72,7 +64,7 @@ public class UserController {
                 if (!merchCartItems.isEmpty()) {
 
                     PurchasedBill purchasedBillCash = new PurchasedBill
-                            (Timestamp.valueOf(LocalDateTime.now()), 2L, new BigDecimal(totalPrice));
+                            (Timestamp.valueOf(LocalDateTime.now()), 2L,  new BigDecimal(totalPrice));
                     purchasedBillService.addPurchasedBill(purchasedBillCash);
 
                     processPurchasedCart(purchasedBillCash);

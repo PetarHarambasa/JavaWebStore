@@ -5,10 +5,9 @@ import hr.algebra.webshop.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class UserService{
+public class UserService {
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -22,14 +21,20 @@ public class UserService{
     public void saveUser(ShopUser shopUser) {
         userRepository.save(shopUser);
     }
+
     public ShopUser getUserByEmailAndPassword(String email, String password) {
         return userRepository.findByEmailContainingAndPasswordContaining(email, password);
     }
-    public ShopUser getUserById(Long id){
+
+    public ShopUser getUserById(Long id) {
         return userRepository.findShopUserByIdShopUser(id);
     }
 
-    public ShopUser getUserByEmail(String email){
+    public ShopUser getUserByEmail(String email) {
         return userRepository.findByEmailContaining(email);
+    }
+
+    public List<ShopUser> getUserListByUsername(String username) {
+        return userRepository.findByUsernameContaining(username);
     }
 }
