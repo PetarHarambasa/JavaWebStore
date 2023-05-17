@@ -64,7 +64,7 @@ paypal.Buttons({
                 xhr.send(data);
 
                 // Code to be executed after 2 seconds
-            }, 2000);
+            }, 1000);
         });
     }
 }).render('#paypal-button-container');

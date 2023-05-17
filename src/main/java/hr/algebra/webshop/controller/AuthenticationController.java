@@ -5,9 +5,11 @@ import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 import hr.algebra.webshop.model.LoginHistory;
 import hr.algebra.webshop.model.ShopUser;
+import hr.algebra.webshop.publisher.MessageEventPublisher;
 import hr.algebra.webshop.service.LoginHistoryService;
 import hr.algebra.webshop.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.SneakyThrows;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -35,9 +37,12 @@ public class AuthenticationController {
     private final UserService userService;
     private final LoginHistoryService loginHistoryService;
 
-    public AuthenticationController(UserService userService, LoginHistoryService loginHistoryService) {
+    private MessageEventPublisher messageEventPublisher;
+
+    public AuthenticationController(UserService userService, LoginHistoryService loginHistoryService, MessageEventPublisher messageEventPublisher) {
         this.userService = userService;
         this.loginHistoryService = loginHistoryService;
+        this.messageEventPublisher = messageEventPublisher;
     }
 
     @GetMapping("/login")
@@ -51,8 +56,10 @@ public class AuthenticationController {
 
     @SneakyThrows
     @PostMapping("/login")
-    public String processLoginForm(@RequestParam("email") String email, @RequestParam("password") String password,
-                                   Model model, HttpServletRequest request) {
+    public String processLoginForm(@RequestParam("email") String email,
+                                   @RequestParam("password") String password,
+                                   Model model, HttpServletRequest request,
+                                   HttpSession session) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         ShopUser shopUser = userService.getUserByEmail(email);
         if (shopUser == null) {
@@ -61,11 +68,8 @@ public class AuthenticationController {
         } else {
             if (shopUser.getEmail().trim().equals(email.trim()) && passwordEncoder.matches(password.trim(), shopUser.getPassword().trim())) {
                 model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
-                authenticatedShopUser = shopUser;
-                authenticatedShopUser.setAuthenticated(true);
-                userService.saveUser(authenticatedShopUser);
-                LoginHistory loginHistory = newLoginHistory(authenticatedShopUser, request);
-                loginHistoryService.saveLogin(loginHistory);
+                saveNewUserLogin(request, shopUser);
+                messageEventPublisher.publishCustomEvent("Login success!");
                 TimeUnit.SECONDS.sleep(1);
                 return "redirect:/dragonBallStore";
             } else {
@@ -75,6 +79,14 @@ public class AuthenticationController {
             }
         }
         return "login";
+    }
+
+    private void saveNewUserLogin(HttpServletRequest request, ShopUser shopUser) throws IOException, GeoIp2Exception {
+        authenticatedShopUser = shopUser;
+        authenticatedShopUser.setAuthenticated(true);
+        userService.saveUser(authenticatedShopUser);
+        LoginHistory loginHistory = newLoginHistory(authenticatedShopUser, request);
+        loginHistoryService.saveLogin(loginHistory);
     }
 
     private LoginHistory newLoginHistory(ShopUser authenticatedShopUser, HttpServletRequest request)
@@ -119,16 +131,21 @@ public class AuthenticationController {
 
     @SneakyThrows
     @GetMapping("/logout")
-    public String logoutProcess(Model model) {
+    public String logoutProcess(Model model, HttpSession session) {
         model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
         if (!authenticatedShopUser.isAuthenticated()) {
             return "redirect:/login";
         }
-        authenticatedShopUser.setAuthenticated(false);
-        userService.saveUser(authenticatedShopUser);
-        authenticatedShopUser = new ShopUser(false);
+        session.invalidate();
+        removeNewUserLogin();
         merchCartItems = new ArrayList<>();
         model.addAttribute("AuthenticatedShopUser", authenticatedShopUser);
         return "login";
+    }
+
+    private void removeNewUserLogin() {
+        authenticatedShopUser.setAuthenticated(false);
+        userService.saveUser(authenticatedShopUser);
+        authenticatedShopUser = new ShopUser(false);
     }
 }
